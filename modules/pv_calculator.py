@@ -29,7 +29,7 @@ def load_woredas():
     
     return woredas, town_list
 
-@st.cache_data(ttl=3600)  # Cache for 1 hour to improve performance
+@st.cache_data(ttl=3600, show_spinner=False)
 def get_weather_data(lat, lon):
     """Extract weather data for specific coordinates from Azure Blob Storage"""
     
