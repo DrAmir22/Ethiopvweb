@@ -30,43 +30,43 @@ def load_woredas():
     return woredas, town_list
 
 @st.cache_data(ttl=3600, show_spinner=False)
+@st.cache_data(ttl=3600)
 def get_weather_data(lat, lon):
-    """Extract weather data for specific coordinates from Azure Blob Storage"""
-    
-    # Azure Blob Storage URL with SAS token
+    """Extract only the data for the specific town from the NC file"""
     WEATHER_DATA_URL = st.secrets.get("WEATHER_DATA_URL", 
         "https://ethiopiasolardata2025.blob.core.windows.net/weatherdata/Ethiopia_Annual_2023.nc?sv=2024-11-04&ss=bfqt&srt=co&sp=rtfx&se=2026-03-28T01:25:46Z&st=2025-03-27T17:25:46Z&spr=https&sig=YQCX4s9gQHpXXCJYV3jT02OV8xBmAxjg%2F7x5SO96bLQ%3D")
     
-    try:
-        # First attempt to use xarray directly with the URL
-        import xarray as xr
-        with st.spinner("Loading weather data for this location..."):
-            # Open the dataset directly from the URL
-            dataset = xr.open_dataset(WEATHER_DATA_URL, engine='h5netcdf')
+    with st.spinner("Loading weather data for this location (first access may take a moment)..."):
+        try:
+            # Use zarr/fsspec to access only the needed subset
+            import xarray as xr
+            import fsspec
+            import numpy as np
             
-            # Extract data for the specific coordinates
-            nearest_x = dataset.x.sel(x=lon, method="nearest")
-            nearest_y = dataset.y.sel(y=lat, method="nearest")
-            location_data = dataset.sel(x=nearest_x, y=nearest_y)
+            # Open the dataset with chunks for efficient access
+            ds = xr.open_dataset(WEATHER_DATA_URL, engine='h5netcdf', chunks={'time': 100})
+            
+            # Find the nearest grid point and extract only that point's data
+            nearest_x = ds.x.sel(x=lon, method="nearest")
+            nearest_y = ds.y.sel(y=lat, method="nearest")
+            
+            # Extract only the single grid cell we need (much smaller download)
+            location_data = ds.sel(x=nearest_x, y=nearest_y)
             
             # Convert to dataframe
             df = location_data.to_dataframe().reset_index().set_index('time')
             
-            # Fix for wind speed - use wnd100m if available or set a minimum wind speed
+            # Fix for wind speed
             if 'wnd100m' in df.columns and df['wnd100m'].mean() > 0:
                 df['wind_speed'] = df['wnd100m']
             else:
-                # Set a minimum non-zero wind speed to avoid temperature model issues
-                df['wind_speed'] = 1.0  # 1 m/s is a reasonable minimum value
-                print("Set minimum wind speed to 1.0 m/s to avoid temperature model issues")
-            
+                df['wind_speed'] = 1.0
+                
             return df
-    
-    except Exception as e:
-        st.error(f"Error accessing weather data: {str(e)}")
-        # If direct access fails, provide fallback behavior or more detailed error
-        st.error("Make sure your WEATHER_DATA_URL secret is configured correctly in Streamlit")
-        raise
+            
+        except Exception as e:
+            st.error(f"Error accessing weather data: {str(e)}")
+            raise
 
 # Function to create solar position data
 def get_solar_position(lat, lon, weather_df):
