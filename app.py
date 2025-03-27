@@ -626,7 +626,7 @@ def main():
                     st.info(f"Using electricity rate: {electricity_price:.4f} ETB/kWh for {customer_type}")
                 
                 # Calculate system recommendation button
-                if st.button("Calculate System Size Recommendation", key="calc_system_size"):
+                if st.button("Calculate System Size Recommendation", key="calc_system_size", type="primary"):
                     with st.spinner("Calculating recommendation..."):
                         try:
                             # Calculate estimated consumption and recommended capacity
