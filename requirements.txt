@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Mar 27 18:42:47 2025
+
+@author: kumab
+"""
+
+streamlit
+pandas
+numpy
+matplotlib
+folium
+streamlit-folium
+pvlib
+xarray
+geopandas
+netCDF4
+h5netcdf
+requests
+shapely
+plotly
+hashlib
+io
