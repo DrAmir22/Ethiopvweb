@@ -638,7 +638,7 @@ def main():
                             
                             # Store in session state
                             st.session_state.consumption_estimate = consumption_estimate
-                            st.experimental_rerun()  # Refresh to show the results
+                            #st.experimental_rerun()  # Refresh to show the results
                         except Exception as e:
                             st.error(f"Error in calculation: {str(e)}")
             
