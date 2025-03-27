@@ -12,5 +12,3 @@ h5netcdf
 requests
 shapely
 plotly
-hashlib
-io
