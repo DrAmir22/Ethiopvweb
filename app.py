@@ -657,10 +657,7 @@ def main():
                             "Estimated Monthly Consumption", 
                             f"{consumption_estimate['estimated_monthly_consumption_kwh']:.0f} kWh"
                         )
-                        st.metric(
-                            "Average Electricity Price", 
-                            f"{consumption_estimate['average_electricity_price_etb']:.2f} ETB/kWh"
-                        )
+                      
                         st.metric(
                             "Recommended System Size", 
                             f"{consumption_estimate['recommended_capacity_kw']:.1f} kWp"
