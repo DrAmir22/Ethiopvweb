@@ -406,7 +406,7 @@ def main():
         5. Click "Calculate PV Potential" to see detailed performance and financial results
         
         ### Data sources:
-        - Weather data: ERA5 reanalysis dataset (2023)
+        - Weather data: ERA5 reanalysis dataset
         - Geographic data: Ethiopia administrative boundaries from CSA
         - Maps: OpenStreetMap,ESRI satelite,Google-earth satelite, Humanitarian OpenStreetMap, and Sentinel.
         - Electricity tariffs: Ethiopian Electric Utility (2024-2028)
