@@ -2,6 +2,7 @@
 import streamlit as st
 import requests
 import os
+from streamlit_folium import folium_static
 
 # Import your modules with the updated name
 from modules.pv_calculator_api import get_weather_data, get_solar_position, calculate_pv_production
