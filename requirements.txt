@@ -12,3 +12,4 @@ h5netcdf
 requests
 shapely
 plotly
+osmnx
