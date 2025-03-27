@@ -701,7 +701,7 @@ def main():
             
             with roof_col1:
                 roof_area = st.number_input("Roof Area (sq. meters)", 
-                                          min_value=10, max_value=1000, value=default_roof_area,
+                                          min_value=1, max_value=1000, value=default_roof_area,
                                           help="Total available roof area for solar panels")
                 roof_tilt = st.slider("Roof Tilt (degrees)", 
                                     min_value=0, max_value=60, value=15,
