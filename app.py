@@ -8,7 +8,7 @@ from streamlit_folium import folium_static
 from modules.pv_calculator_api import get_weather_data, get_solar_position, calculate_pv_production
 from modules.financial import financial_analysis, estimate_consumption_and_capacity, project_electricity_price
 from modules.mapping import create_town_map, town_list
-
+from shapely.geometry import Point
 # Check weather data availability
 def check_weather_data_connection():
     """Test if the weather data in Azure is accessible"""
